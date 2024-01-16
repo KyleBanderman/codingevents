@@ -8,10 +8,13 @@
     <h1>All Events</h1>
     <nav th:replace="fragments :: navigation"></nav>
     <p th:unless = "${events} and ${events.size()}">No Events!</p>
-    <ul>
+    <table>
         <th:block th:each = "event : ${events}">
-            <li th:text = "${event}">No Event Found</li>
+            <tr>
+                <td th:text = "${event.key}"></td>
+                <td th:text = "${event.value}"></td>
+                <td th:replace = "fragments :: address"></td>
         </th:block>
-    </ul>
+    </table>
 </body>
 </html>

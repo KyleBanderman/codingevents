@@ -8,7 +8,10 @@
     <h1>Create Event</h1>
     <nav th:replace="fragments :: navigation"></nav>
     <form method = "post" action="/events/create">
+        <label>Enter Name:</label>
         <input type="text" name="eventName">
+        <label>Enter Description:</label>
+        <input type="text" name="eventTag">
         <input type="submit" value="Create Event">
     </form>
 </body>
