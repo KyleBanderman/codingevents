@@ -1,22 +1,20 @@
 package org.launchcode.codingevents.Controllers;
 
+import org.launchcode.codingevents.data.EventData;
+import org.launchcode.codingevents.models.Event;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+
 
 @Controller
 @RequestMapping("events")
 public class EventController {
 
-    private static HashMap<String, String> events = new HashMap<>();
-
     @GetMapping
     public String displayEvents (Model model) {
-        model.addAttribute("events", events);
+        model.addAttribute("events", EventData.getAll());
         return "events/index";
     }
 
@@ -26,11 +24,25 @@ public class EventController {
     }
 
     @PostMapping("create") //lives at /events/create
-    public String createEvent(@RequestParam String eventName, @RequestParam String eventTag) {
-        events.put("Baba booey", "booey Baba");
-        events.put("Yaya yooey", "yooey Yaya");
-        events.put("Dada dooey", "dooey Dada");
-        events.put(eventName, eventTag);
+    public String processCreateEventForm(@ModelAttribute Event newEvent) {
+        EventData.add(newEvent);
+        return "redirect:/events";
+    }
+
+    @GetMapping("delete") //lives at /events/delete
+    public String displayDeleteEventForm(Model model) {
+        model.addAttribute("title", "Delete Events");
+        model.addAttribute("events", EventData.getAll());
+        return "events/delete";
+    }
+
+    @PostMapping("delete") //lives at /events/delete
+    public String processDeleteEventForm(@RequestParam(required = false) int[] eventIds) {
+        if (eventIds != null) {
+            for (int id : eventIds) {
+                EventData.remove(id);
+            }
+        }
         return "redirect:/events";
     }
 }
